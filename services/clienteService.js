@@ -1,5 +1,5 @@
 const Cliente = require("../models/cliente");
-const { handleError } = require("../utils/errorHandler");
+const { logger } = require("../utils/winston");
 
 exports.guardarCliente = async (clienteData, connMongoose) => {
   try {
@@ -8,7 +8,7 @@ exports.guardarCliente = async (clienteData, connMongoose) => {
     let newClient = await cliente.save();
     return newClient;
   } catch (error) {
-    handleError("guardarCliente", error);
+    logger.error(`guardarCliente, ${error}`);
   }
 };
 
@@ -17,6 +17,7 @@ exports.obtenerTodosLosClientes = async () => {
     const clientes = await Cliente.find({});
     return clientes;
   } catch (error) {
-    handleError("obtenerTodosLosClientes", error);
+    logger.error(`obtenerTodosLosClientes, ${error}`);
   }
 };
+//falta cambiar conexion

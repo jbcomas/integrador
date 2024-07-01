@@ -1,5 +1,5 @@
 const connectRabbitMQ = require("../config/rabbitmq");
-const { handleError } = require("../utils/errorHandler");
+const { logger } = require("../utils/winston");
 const { guardarCliente } = require("./clienteService");
 
 async function enviarMensajeACola(cola, mensaje) {
@@ -14,7 +14,7 @@ async function enviarMensajeACola(cola, mensaje) {
       console.log({ message: "Mensaje enviado a la cola" });
     });
   } catch (error) {
-    handleError("enviarMensajeACola", error);
+    logger.error(`enviarMensajeACola: ${error}`);
   }
 }
 async function consumirMensajeCola(cola, connMongoose) {
@@ -32,7 +32,7 @@ async function consumirMensajeCola(cola, connMongoose) {
       });
     });
   } catch (error) {
-    handleError("consumirMensajeCola", error);
+    logger.error(`consumirMensajeCola: ${error}`);
   }
 }
 module.exports = {

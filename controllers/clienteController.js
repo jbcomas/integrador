@@ -3,7 +3,7 @@ const {
   obtenerTodosLosClientes,
 } = require("../services/clienteService");
 const { enviarMensajeACola } = require("../services/rabbitmqService");
-const { handleError } = require("../utils/errorHandler");
+const { logger } = require("../utils/winston");
 
 exports.crearCliente = async (req, res) => {
   try {
@@ -11,7 +11,7 @@ exports.crearCliente = async (req, res) => {
     let client = await guardarCliente(cliente);
     res.send(client);
   } catch (error) {
-    handleError("crearCliente", error);
+    logger.error(`crearCliente, ${error}`);
     res.status(400).send(error);
   }
 };
@@ -21,7 +21,7 @@ exports.obtenerClientes = async (req, res) => {
     const clientes = await obtenerTodosLosClientes();
     res.send(clientes);
   } catch (error) {
-    handleError("obtenerClientes", error);
+    logger.error(`cobtenerClientes, ${error}`);
     res.status(500).send(error);
   }
 };
@@ -32,7 +32,7 @@ exports.enqueueSyncTask = async (req, res) => {
     enviarMensajeACola(queue, cliente);
     res.send("Tarea de sincronización encolada");
   } catch (error) {
-    handleError("enqueueSyncTask", error);
+    logger.error(`enqueueSyncTask, ${error}`);
     res.status(500).send(error);
   }
 };

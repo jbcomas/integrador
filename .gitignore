@@ -17,3 +17,5 @@ logs/*.log
 # Directorios de configuración del sistema operativo
 .DS_Store
 Thumbs.db
+
+.husky

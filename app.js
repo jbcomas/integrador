@@ -6,7 +6,7 @@ const configurarSockets = require("./sockets/clienteSocket");
 const router = require("./routes/clientes");
 const { connMongoose } = require("./config/database");
 const bodyParser = require("body-parser");
-const { handleError } = require("./utils/errorHandler");
+const { logger } = require("./utils/winston");
 
 const app = express();
 const server = http.createServer(app);
@@ -15,22 +15,32 @@ configurarSockets(io);
 connMongoose();
 
 app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
+
 app.use("/api", router);
 app.get("/", (req, res) => {
-  res.send("Integrador ERP - Tienda Nube está corriendo");
+  res.send("Integrador ERP - Tienda Nube está corriendo ");
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+  process.stdout.write(`\nServidor corriendo en el puerto ${PORT} \n`);
 });
 
-app.use((err) => {
-  handleError("Error Middleware", err);
+/* eslint-disable no-unused-vars */
+app.use((err, req, res, next) => {
+  logger.error(`Error Middleware, ${err.message}`);
+  res.status(500).send("Hubo un error en el servidor");
 });
+/* eslint-enable no-unused-vars */
+
 process.on("unhandledRejection", (reason, promise) => {
-  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  logger.error(`Unhandled Rejection at:, ${promise}, "reason:", ${reason}`);
 });
 process.on("uncaughtException", (err) => {
-  console.error("Uncaught Exception thrown:", err);
+  logger.error(`Uncaught Exception thrown: ${err}`);
 });

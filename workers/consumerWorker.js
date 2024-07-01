@@ -1,6 +1,6 @@
 const amqp = require("amqplib/callback_api");
 const { startWorker } = require("./createWorker");
-const { handleError } = require("../utils/errorHandler");
+const { logger } = require("../utils/winston");
 
 const consumeMessages = () => {
   try {
@@ -33,7 +33,7 @@ const consumeMessages = () => {
       });
     });
   } catch (error) {
-    handleError("consumeMessages", error);
+    logger.error(`consumeMessages ${error}`);
   }
 };
 

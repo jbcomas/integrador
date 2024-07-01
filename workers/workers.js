@@ -4,7 +4,7 @@ const {
   consumirMensajeCola,
 } = require("../services/rabbitmqService");
 const { connMongoose } = require("../config/database");
-const { handleError } = require("../utils/errorHandler");
+const { logger } = require("../utils/winston");
 
 const syncProductsForClient = async () => {
   try {
@@ -16,7 +16,7 @@ const syncProductsForClient = async () => {
 
     await consumirMensajeCola(cola, connMongoose);
   } catch (error) {
-    handleError("syncProductsForClient", error);
+    logger.error(`syncProductsForClient ${error}`);
     parentPort.postMessage({ success: false });
   }
 };

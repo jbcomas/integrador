@@ -1,12 +1,12 @@
 const { parentPort, workerData } = require("worker_threads");
-const { handleError } = require("../utils/errorHandler");
+const { logger } = require("../utils/winston");
 
 const syncWorker = () => {
   try {
     const { data } = workerData;
     syncProductsForClient(data);
   } catch (error) {
-    handleError("syncProductsForClient", error);
+    logger.error(`syncWorker ${error}`);
   }
 };
 
@@ -17,7 +17,7 @@ const syncProductsForClient = async (data) => {
     parentPort.postMessage({ message: data });
     process.exit(0);
   } catch (error) {
-    handleError("syncProductsForClient", error);
+    logger.error(`syncProductsForClient ${error}`);
     parentPort.postMessage({ success: false });
     process.exit(0);
   }
