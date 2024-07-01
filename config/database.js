@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
-const connMongoose = () => {
-  mongoose.connect("mongodb://localhost:27017/mydatabase", {
+let conn = "mydatabase"
+
+const connMongoose = (conn) => {
+
+  mongoose.connect(`mongodb://localhost:27017/${conn}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

@@ -33,6 +33,6 @@
     "nodemon": "^3.1.4"
   },
   "lint-staged": {
-    "*.js": "eslint --fix"
+    "*.js": "eslint"
   }
 }

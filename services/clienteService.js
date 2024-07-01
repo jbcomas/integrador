@@ -3,7 +3,7 @@ const { logger } = require("../utils/winston");
 
 exports.guardarCliente = async (clienteData, connMongoose) => {
   try {
-    connMongoose();
+    connMongoose("mydatabase");
     const cliente = new Cliente(clienteData);
     let newClient = await cliente.save();
     return newClient;
