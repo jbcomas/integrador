@@ -20,4 +20,3 @@ exports.obtenerTodosLosClientes = async () => {
     logger.error(`obtenerTodosLosClientes, ${error}`);
   }
 };
-//falta cambiar conexion
