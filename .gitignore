@@ -1,0 +1,19 @@
+# Dependencias de node
+node_modules/
+npm-debug.log
+
+# Entorno
+.env
+
+# Directorios de producción
+dist/
+build/
+
+# Logs
+logs/
+*.log
+logs/*.log
+
+# Directorios de configuración del sistema operativo
+.DS_Store
+Thumbs.db
