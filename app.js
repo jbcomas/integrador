@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 configurarSockets(io);
-connMongoose();
+connMongoose("mydatabase");
 
 app.use(bodyParser.json());
 
