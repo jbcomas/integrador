@@ -1,5 +1,6 @@
 const connectRabbitMQ = require("../config/rabbitmq");
 const { logger } = require("../utils/winston");
+const { startWorker } = require("../workers/createWorker");
 const { guardarCliente } = require("./clienteService");
 
 async function enviarMensajeACola(cola, mensaje) {
@@ -35,7 +36,26 @@ async function consumirMensajeCola(cola, connMongoose) {
     logger.error(`consumirMensajeCola: ${error}`);
   }
 }
+async function consumirCliente(cola) {
+  try {
+    connectRabbitMQ((channel) => {
+      channel.consume(cola, async (msg) => {
+        if (msg !== null) {
+          const clientData = JSON.parse(msg.content.toString());
+          await startWorker(clientData, "./workers/syncWorker.js");
+          console.log({
+            message: `Cliente creado ${newClient.nombre}`,
+          });
+          channel.ack(msg);
+        }
+      });
+    });
+  } catch (error) {
+    logger.error(`consumirMensajeCola: ${error}`);
+  }
+}
 module.exports = {
   enviarMensajeACola,
   consumirMensajeCola,
+  consumirCliente,
 };
