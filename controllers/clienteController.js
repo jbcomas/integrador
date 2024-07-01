@@ -8,6 +8,7 @@ const { logger } = require("../utils/winston");
 exports.crearCliente = async (req, res) => {
   try {
     const cliente = req.body;
+    if (!cliente) return res.status(400).send("Falta enviar el cliente");
     let client = await guardarCliente(cliente);
     res.send(client);
   } catch (error) {
