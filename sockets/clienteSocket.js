@@ -12,6 +12,7 @@ function configurarSockets(io) {
         "./workers/workers.js"
       );
     });
+    socket.emit("respuestaServidor", "mensaje");
     socket.on("disconnect", () => {
       console.log("Cliente desconectado");
     });
